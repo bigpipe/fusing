@@ -1,0 +1,38 @@
+{
+  "name": "fusing",
+  "version": "0.0.0",
+  "description": "Prototype fusion",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha $(find test -name '*.test.js')"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigpipe/fusing"
+  },
+  "keywords": [
+    "fusing",
+    "fusion",
+    "bigpipe",
+    "constructor",
+    "prototype",
+    "merge",
+    "inherit",
+    "base",
+    "class"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bigpipe/fusing/issues"
+  },
+  "homepage": "https://github.com/bigpipe/fusing",
+  "dependencies": {
+    "predefine": "0.0.x"
+  },
+  "devDependencies": {
+    "chai": "1.8.x",
+    "mocha": "1.13.x",
+    "pre-commit": "0.0.x"
+  }
+}
