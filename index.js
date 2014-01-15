@@ -40,7 +40,7 @@ module.exports = function fuse(Base, inherits) {
    * called
    *
    * ```js
-   * page.on('close', pagelet.emits('close'));
+   * example.on('close', example.emits('close'));
    * ```
    *
    * @param {String} event Name of the event that we should emit.
