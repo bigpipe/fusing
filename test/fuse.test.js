@@ -16,6 +16,12 @@ describe('fuse', function () {
     expect(fuse(Base, Case)).to.equal(Base);
   });
 
+  it('does optional inherit', function () {
+    function Base() {}
+
+    expect(fuse(Base).prototype).to.equal(Base.prototype);
+  });
+
   it('exposes the extend method', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
