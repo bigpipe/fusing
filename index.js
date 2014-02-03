@@ -12,7 +12,7 @@ var predefine = require('predefine')
  * @api private
  */
 module.exports = function fuse(Base, inherits) {
-  Base.prototype.__proto__ = inherits.prototype;
+  if (inherits) Base.prototype.__proto__ = inherits.prototype;
 
   Base.writable = predefine(Base.prototype, predefine.WRITABLE);
   Base.readable = predefine(Base.prototype, {
