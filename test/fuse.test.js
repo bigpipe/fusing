@@ -69,6 +69,42 @@ describe('fuse', function () {
     expect(new Base()).to.be.instanceOf(Case);
   });
 
+  it('doesnt add the default methods if we dont want it', function () {
+    function Base() {} function Case() {}
+    fuse(Base, Case, { defaults: false });
+
+    var base = new Base();
+
+    expect(base).to.be.instanceOf(Base);
+    expect(base).to.be.instanceOf(Case);
+
+    expect(base.emits).to.equal(undefined);
+    expect(base.mixin).to.equal(undefined);
+  });
+
+  it('allows disabling of individual methods', function () {
+    function Base() {} function Case() {}
+    fuse(Base, Case, { mixin: false });
+
+    var base = new Base();
+
+    expect(base).to.be.instanceOf(Base);
+    expect(base).to.be.instanceOf(Case);
+
+    expect(base.emits).to.be.a('function');
+    expect(base.mixin).to.equal(undefined);
+  });
+
+  it('accepts options as second argument', function () {
+    function Base() {}
+    fuse(Base, { mixin: false });
+
+    var base = new Base();
+
+    expect(base.emits).to.be.a('function');
+    expect(base.mixin).to.equal(undefined);
+  });
+
   describe('emits', function () {
     it('adds the emits function to the prototype', function () {
       function Base() {} function Case() {}

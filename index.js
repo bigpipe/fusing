@@ -8,11 +8,19 @@ var predefine = require('predefine')
  *
  * @param {Function} Base Base function.
  * @param {Function} inherits The function where the base needs to inherit from.
+ * @param {Object} options Configure how the inheritance is done.
  * @returns {Function} Base.
  * @api private
  */
-module.exports = function fuse(Base, inherits) {
-  if (inherits) Base.prototype.__proto__ = inherits.prototype;
+module.exports = function fuse(Base, inherits, options) {
+  options = options || {};
+
+  if ('function' === typeof inherits) {
+    Base.prototype.__proto__ = inherits.prototype;
+  } else if ('object' === typeof inherits) {
+    options = inherits;
+    inherits = null;
+  }
 
   Base.writable = predefine(Base.prototype, predefine.WRITABLE);
   Base.readable = predefine(Base.prototype, {
@@ -21,12 +29,6 @@ module.exports = function fuse(Base, inherits) {
     writable: false
   });
 
-  //
-  // Inherit some methods from the predefine module
-  //
-  Base.readable('mixin', predefine.mixin);
-  Base.readable('merge', predefine.merge);
-
   /**
    * Reset the constructor so it points to the Base class.
    *
@@ -34,6 +36,34 @@ module.exports = function fuse(Base, inherits) {
    * @api public
    */
   Base.writable('constructor', Base);
+
+  /**
+   * Make the Base class extendable using Backbone's .extend pattern.
+   *
+   * @type {Function}
+   * @api public
+   */
+  Base.extend = predefine.extend;
+
+  /**
+   * Expose the predefine.
+   *
+   * @type {Function}
+   * @api public
+   */
+  Base.predefine = predefine;
+
+  //
+  // Allow inheritance without adding additional default methods to the
+  // prototype.
+  //
+  if (options.defaults === false) return Base;
+
+  //
+  // Inherit some methods from the predefine module
+  //
+  if (options.mixin !== false) Base.readable('mixin', predefine.mixin);
+  if (options.merge !== false) Base.readable('merge', predefine.merge);
 
   /**
    * Simple emit wrapper that returns a function that emits an event once it's
@@ -47,6 +77,7 @@ module.exports = function fuse(Base, inherits) {
    * @param {Function} parser Argument parser.
    * @api public
    */
+  if (options.emits !== false)
   Base.readable('emits', function emits(event, parser) {
     var self = this;
 
@@ -66,6 +97,7 @@ module.exports = function fuse(Base, inherits) {
    * @returns {Function} iterator
    * @api private
    */
+  if (options.resolve !== false)
   Base.writable('resolve', function resolve(dir, stack) {
     return function resolver(object) {
       if ('string' === typeof stack[object]) {
@@ -73,22 +105,6 @@ module.exports = function fuse(Base, inherits) {
       }
     };
   });
-
-  /**
-   * Make the Base class extendable using Backbone's .extend pattern.
-   *
-   * @type {Function}
-   * @api public
-   */
-  Base.extend = predefine.extend;
-
-  /**
-   * Expose the predefine.
-   *
-   * @type {Function}
-   * @api public
-   */
-  Base.predefine = predefine;
 
   return Base;
 };
