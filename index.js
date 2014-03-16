@@ -1,6 +1,7 @@
 'use strict';
 
 var predefine = require('predefine')
+  , slice = Array.prototype.slice
   , path = require('path');
 
 /**
@@ -74,17 +75,41 @@ module.exports = function fuse(Base, inherits, options) {
    * ```
    *
    * @param {String} event Name of the event that we should emit.
-   * @param {Function} parser Argument parser.
+   * @param {Function} parser The last argument, if it's a function is a arg parser
    * @api public
    */
   if (options.emits !== false)
-  Base.readable('emits', function emits(event, parser) {
-    var self = this;
+  Base.readable('emits', function emits() {
+    var args = slice.call(arguments, 0)
+      , self = this
+      , parser;
+
+    //
+    // Automatically prefix the event that we `emit`
+    //
+    if ('string' === typeof options.prefix) {
+      args[0] = options.prefix + args[0];
+    }
+
+    //
+    // Assume that if the last given argument is a function, it would be
+    // a parser.
+    //
+    if ('function' === typeof args[args.length - 1]) {
+      parser = args.pop();
+    }
 
     return function emit(arg) {
-      if (!self.listeners(event).length) return false;
+      if (!self.listeners(args[0]).length) return false;
 
-      return self.emit(event, parser ? parser.apply(self, arguments) : arg);
+      if (parser) {
+        arg = parser.apply(self, arguments);
+        if (!Array.isArray(arg)) arg = [arg];
+      } else {
+        arg = slice.call(arguments, 0);
+      }
+
+      return self.emit.apply(self, args.concat(arg));
     };
   });
 

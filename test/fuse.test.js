@@ -145,5 +145,39 @@ describe('fuse', function () {
 
       emits('bar');
     });
+
+    it('curries arguments', function (done) {
+      function Base() {}
+      fuse(Base, EventEmitter);
+
+      var base = new Base()
+        , emits = base.emits('event', 'foo');
+
+      base.once('event', function (data, foo) {
+        expect(data).to.equal('foo');
+        expect(foo).to.equal('bar');
+        done();
+      });
+
+      emits('bar');
+    });
+
+    it('can prefix events', function (done) {
+      function Base() {}
+      fuse(Base, EventEmitter, {
+        prefix: 'foo::'
+      });
+
+      var base = new Base()
+        , emits = base.emits('event', 'foo');
+
+      base.once('foo::event', function (data, foo) {
+        expect(data).to.equal('foo');
+        expect(foo).to.equal('bar');
+        done();
+      });
+
+      emits('bar');
+    });
   });
 });
