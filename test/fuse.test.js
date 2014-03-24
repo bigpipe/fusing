@@ -105,7 +105,7 @@ describe('fuse', function () {
     expect(base.mixin).to.equal(undefined);
   });
 
-  describe('emits', function () {
+  describe('.emits', function () {
     it('adds the emits function to the prototype', function () {
       function Base() {} function Case() {}
       fuse(Base, Case);
@@ -178,6 +178,82 @@ describe('fuse', function () {
       });
 
       emits('bar');
+    });
+  });
+
+  describe('.fuse', function () {
+    it('adds a .fuse method to the prototype', function () {
+      function Base() {} function Case() {}
+      fuse(Base, Case);
+
+      expect(Base.prototype.fuse).to.be.a('function');
+    });
+
+    it('initialises the inherited constructor', function (done) {
+      function Base() {
+        this.fuse();
+
+        expect(this.bar).to.equal('foo');
+        done();
+      }
+
+      function Case() {
+        this.bar = 'foo';
+      }
+
+      fuse(Base, Case);
+      new Base();
+    });
+
+    it('adds readable and writable props', function (done) {
+      function Base() {
+        this.fuse();
+
+        expect(this.writable).to.be.a('function');
+        expect(this.readable).to.be.a('function');
+        expect(this.foo).to.equal(undefined);
+
+        this.readable('foo', 'bar');
+        this.writable('bar', 'foo');
+
+        expect(this.foo).to.equal('bar');
+        expect(this.bar).to.equal('foo');
+
+        expect(Object.keys(this).length).to.equal(0);
+
+        this.bar = 'bar';
+        expect(this.bar).to.equal('bar');
+
+        try { this.foo = 'foo'; }
+        catch (e) { done(); }
+      }
+
+      function Case() {}
+
+      expect(Base.prototype.readable).to.equal(undefined);
+      expect(Base.prototype.writable).to.equal(undefined);
+
+      fuse(Base, Case);
+      new Base();
+    });
+
+    it('applies the arguments to the inherited constructor', function (done) {
+      function Base() {
+        this.fuse(arguments);
+
+        expect(this.bar).to.equal('foo');
+        done();
+      }
+
+      function Case(foo, bar) {
+        expect(foo).to.equal('foo');
+        expect(bar).to.equal('bar');
+
+        this.bar = 'foo';
+      }
+
+      fuse(Base, Case);
+      new Base('foo', 'bar');
     });
   });
 });

@@ -31,19 +31,30 @@ module.exports = function fuse(Base, inherits, options) {
   });
 
   /**
-   * Ensure that we initialise both constructor.
+   * Reset the constructor so it points to the Base class.
    *
    * @type {Function}
    * @api public
    */
-  Base.writable('constructor', function initialise() {
+  Base.writable('constructor', Base);
+
+  /**
+   * Spice up
+   *
+   * @api public
+   */
+  Base.writable('fuse', function fuse(args) {
     var writable = predefine(this, predefine.WRITABLE);
 
     if (!this.writable) writable('writable', writable);
     if (!this.readable) writable('readable', predefine(this));
 
-    inherits.apply(this, arguments);
-    Base.apply(this, arguments);
+    //
+    // Inheritance is optional, so only execute it when it's an actual function.
+    //
+    if ('function' === typeof inherits) {
+      inherits.apply(this, args || arguments);
+    }
   });
 
   /**
