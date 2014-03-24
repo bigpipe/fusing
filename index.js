@@ -31,12 +31,20 @@ module.exports = function fuse(Base, inherits, options) {
   });
 
   /**
-   * Reset the constructor so it points to the Base class.
+   * Ensure that we initialise both constructor.
    *
    * @type {Function}
    * @api public
    */
-  Base.writable('constructor', Base);
+  Base.writable('constructor', function initialise() {
+    var writable = predefine(this, predefine.WRITABLE);
+
+    if (!this.writable) writable('writable', writable);
+    if (!this.readable) writable('readable', predefine(this));
+
+    inherits.apply(this, arguments);
+    Base.apply(this, arguments);
+  });
 
   /**
    * Make the Base class extendable using Backbone's .extend pattern.
