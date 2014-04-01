@@ -28,11 +28,11 @@
   },
   "homepage": "https://github.com/bigpipe/fusing",
   "dependencies": {
-    "predefine": "0.0.x"
+    "predefine": "0.1.x"
   },
   "devDependencies": {
-    "chai": "1.8.x",
-    "mocha": "1.13.x",
-    "pre-commit": "0.1.x"
+    "chai": "1.9.x",
+    "mocha": "1.18.x",
+    "pre-commit": "0.0.x"
   }
 }
