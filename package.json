@@ -29,8 +29,7 @@
   },
   "homepage": "https://github.com/bigpipe/fusing",
   "dependencies": {
-    "predefine": "0.1.x",
-    "fabricator": "0.2.x"
+    "predefine": "0.1.x"
   },
   "devDependencies": {
     "chai": "1.9.x",

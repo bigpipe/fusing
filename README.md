@@ -82,7 +82,7 @@ Example.writable('property', 'foo');
 **Please note that this function is added on the `Example` function not on the
 `Example.prototype`.**
 
-## Example.extend
+### Example.extend
 
 This allows you to use the same `extend` functionality that you might be
 accustomed to with `Backbone` in your own classes:
@@ -100,7 +100,7 @@ var MyExample = Example.extend({
 **Please note that this function is added on the `Example` function not on the
 `Example.prototype`.**
 
-## Example.predefine
+### Example.predefine
 
 As it's sometimes useful to also create readable and writable properties when
 your class is constructed, we decided to expose the `predefine` module on your

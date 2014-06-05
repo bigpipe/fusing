@@ -132,23 +132,5 @@ module.exports = function fuse(Base, inherits, options) {
     };
   });
 
-  /**
-   * Compile iterator to resolve paths to various resources supplied to the module.
-   *
-   * @param {String} dir base directory
-   * @param {Object} stack original collection
-   * @param {Mixed} object reference to resource
-   * @returns {Function} iterator
-   * @api private
-   */
-  if (options.resolve !== false)
-  Base.writable('resolve', function resolve(dir, stack) {
-    return function resolver(object) {
-      if ('string' === typeof stack[object]) {
-        stack[object] = path.join(dir, stack[object]);
-      }
-    };
-  });
-
   return Base;
 };
