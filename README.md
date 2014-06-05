@@ -1,6 +1,8 @@
-# fusing
+# Fusing [![Build Status][status]](https://travis-ci.org/bigpipe/fusing) [![NPM version][npmimgurl]](http://badge.fury.io/js/fusing) [![Coverage Status][coverage]](http://coveralls.io/r/bigpipe/fusing?branch=master)
 
-[![Build Status](https://travis-ci.org/bigpipe/fusing.png?branch=master)](https://travis-ci.org/bigpipe/fusing)
+[status]: https://travis-ci.org/bigpipe/fusing.png
+[npmimgurl]: https://badge.fury.io/js/fusing.png
+[coverage]: http://coveralls.io/repos/bigpipe/fusing/badge.png?branch=master
 
 Fusing is a small library that creates the base class that is used in all of
 [bigpipe]'s components. It takes care of:
