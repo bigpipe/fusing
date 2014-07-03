@@ -18,6 +18,7 @@ module.exports = function fuse(Base, inherits, options) {
 
   if ('function' === typeof inherits) {
     Base.prototype.__proto__ = inherits.prototype;
+    inherits.fuser = fuser;
   } else if ('object' === typeof inherits) {
     options = inherits;
     inherits = null;
@@ -43,19 +44,7 @@ module.exports = function fuse(Base, inherits, options) {
    *
    * @api public
    */
-  Base.writable('fuse', function fuse(args) {
-    var writable = predefine(this, predefine.WRITABLE);
-
-    if (!this.writable) writable('writable', writable);
-    if (!this.readable) writable('readable', predefine(this));
-
-    //
-    // Inheritance is optional, so only execute it when it's an actual function.
-    //
-    if ('function' === typeof inherits) {
-      inherits.apply(this, args || arguments);
-    }
-  });
+  Base.writable('fuse', inherits ? inherits.fuser : fuser);
 
   /**
    * Make the Base class extendable using Backbone's .extend pattern.
@@ -131,6 +120,20 @@ module.exports = function fuse(Base, inherits, options) {
       return self.emit.apply(self, args.concat(arg));
     };
   });
+
+  function fuser(args) {
+    var writable = predefine(this, predefine.WRITABLE);
+
+    if (!this.writable) writable('writable', writable);
+    if (!this.readable) writable('readable', predefine(this));
+
+    //
+    // Inheritance is optional, so only execute it when it's an actual function.
+    //
+    if ('function' === typeof inherits) {
+      inherits.apply(this, args || arguments);
+    }
+  }
 
   return Base;
 };
