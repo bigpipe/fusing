@@ -256,4 +256,27 @@ describe('fuse', function () {
       new Base('foo', 'bar');
     });
   });
+
+  it('allows fusing a fused fuse', function () {
+    function Bar() {
+      console.log('bar');
+    }
+
+    function Fuse(x) {
+      if (!x) throw new Error('missing args');
+
+      this.fuse();
+      console.log(x);
+    }
+
+    fuse(Fuse, Bar);
+
+    function Foo() {
+      this.fuse(['hi']);
+    }
+
+    fuse(Foo, Fuse);
+
+    var y = new Foo();
+  });
 });

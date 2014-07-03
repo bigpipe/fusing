@@ -43,11 +43,14 @@ module.exports = function fuse(Base, inherits, options) {
    *
    * @api public
    */
+  var fused = Base.prototype.fuse;
   Base.writable('fuse', function fuse(args) {
     var writable = predefine(this, predefine.WRITABLE);
 
     if (!this.writable) writable('writable', writable);
     if (!this.readable) writable('readable', predefine(this));
+
+    if (fused) this.fuse = fused;
 
     //
     // Inheritance is optional, so only execute it when it's an actual function.
