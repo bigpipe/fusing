@@ -1,6 +1,6 @@
 {
   "name": "fusing",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Prototype fusion",
   "main": "index.js",
   "scripts": {

@@ -82,6 +82,36 @@ Example.writable('property', 'foo');
 **Please note that this function is added on the `Example` function not on the
 `Example.prototype`.**
 
+### Example.get
+
+Add a getter to the prototype.
+
+```js
+var foo = 'bar'
+Example.get('property', function () {
+  return foo;
+});
+```
+
+**Please note that this function is added on the `Example` function not on the
+`Example.prototype`.**
+
+### Example.set
+
+Add a getter AND a setter to the prototype.
+
+```js
+var foo = 'bar'
+Example.set('property', function () {
+  return foo;
+}, function (value) {
+  return foo = value;
+});
+```
+
+**Please note that this function is added on the `Example` function not on the
+`Example.prototype`.**
+
 ### Example.extend
 
 This allows you to use the same `extend` functionality that you might be
