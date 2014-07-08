@@ -60,6 +60,32 @@ describe('fuse', function () {
     expect(Base.prototype.bar).to.equal('bar');
   });
 
+  it('adds get and set methods to the class', function () {
+    function Base() {} function Case() {}
+    fuse(Base, Case);
+
+    expect(Base.get).to.be.a('function');
+    expect(Base.set).to.be.a('function');
+
+    expect(Base.prototype.foo).to.equal(undefined);
+    expect(Base.prototype.bar).to.equal(undefined);
+
+    var x = 'bar';
+    Base.get('foo', function () { return 'foo'; });
+    Base.set('bar', function () { return x; }, function (y) { return x = y; });
+
+    var base = new Base();
+
+    expect(base.foo).to.equal('foo');
+    expect(base.bar).to.equal('bar');
+
+    x = 'foo';
+    expect(base.bar).to.equal('foo');
+
+    base.bar = 'baz';
+    expect(base.bar).to.equal('baz');
+  });
+
   it('sets the constructor back to the Base', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);

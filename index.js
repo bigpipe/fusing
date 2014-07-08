@@ -23,12 +23,62 @@ module.exports = function fuse(Base, inherits, options) {
     inherits = null;
   }
 
+  /**
+   * Add a new property to the prototype which is not enumerable but still
+   * writable.
+   *
+   * @type {Function}
+   * @public
+   */
   Base.writable = predefine(Base.prototype, predefine.WRITABLE);
+
+  /**
+   * Add a new property to the prototype which is not enumerable but only
+   * readable.
+   *
+   * @type {Function}
+   * @public
+   */
   Base.readable = predefine(Base.prototype, {
     configurable: false,
     enumerable: false,
     writable: false
   });
+
+  /**
+   * Add a new property to the prototype which is not enumerable but only
+   * a getter.
+   *
+   * @type {Function}
+   * @public
+   */
+  Base.get = function get(method, getter) {
+    Object.defineProperty(Base.prototype, method, {
+      configurable: false,
+      enumerable: false,
+      get: getter
+    });
+
+    return get;
+  };
+
+  /**
+   * Add a new property to the prototype which is not enumerable but only
+   * a getter and setter.
+   *
+   * @type {Function}
+   * @public
+   */
+  Base.set = function set(method, getter, setter) {
+    Object.defineProperty(Base.prototype, method, {
+      configurable: false,
+      enumerable: false,
+      get: getter,
+      set: setter
+    });
+
+    return set;
+  };
 
   /**
    * Reset the constructor so it points to the Base class.
