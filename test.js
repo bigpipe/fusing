@@ -2,73 +2,72 @@ describe('fuse', function () {
   'use strict';
 
   var EventEmitter = require('events').EventEmitter
-    , chai = require('chai')
-    , fuse = require('../')
-    , expect = chai.expect;
+    , assume = require('assume')
+    , fuse = require('./');
 
   it('exports it self as function', function() {
-    expect(fuse).to.be.a('function');
+    assume(fuse).to.be.a('function');
   });
 
   it('returns the Base', function () {
     function Base() {} function Case() {}
 
-    expect(fuse(Base, Case)).to.equal(Base);
+    assume(fuse(Base, Case)).to.equal(Base);
   });
 
   it('does optional inherit', function () {
     function Base() {}
 
-    expect(fuse(Base).prototype).to.equal(Base.prototype);
+    assume(fuse(Base).prototype).to.equal(Base.prototype);
   });
 
   it('exposes the extend method', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.extend).to.be.a('function');
+    assume(Base.extend).to.be.a('function');
   });
 
   it('exposes the mixin method', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.prototype.mixin).to.be.a('function');
+    assume(Base.prototype.mixin).to.be.a('function');
   });
 
   it('exposes the merge method', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.prototype.merge).to.be.a('function');
+    assume(Base.prototype.merge).to.be.a('function');
   });
 
   it('adds writable and readable methods to the class', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.writable).to.be.a('function');
-    expect(Base.readable).to.be.a('function');
+    assume(Base.writable).to.be.a('function');
+    assume(Base.readable).to.be.a('function');
 
-    expect(Base.prototype.foo).to.equal(undefined);
-    expect(Base.prototype.bar).to.equal(undefined);
+    assume(Base.prototype.foo).to.equal(undefined);
+    assume(Base.prototype.bar).to.equal(undefined);
 
     Base.readable('foo', 'foo');
     Base.writable('bar', 'bar');
 
-    expect(Base.prototype.foo).to.equal('foo');
-    expect(Base.prototype.bar).to.equal('bar');
+    assume(Base.prototype.foo).to.equal('foo');
+    assume(Base.prototype.bar).to.equal('bar');
   });
 
   it('adds get and set methods to the class', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.get).to.be.a('function');
-    expect(Base.set).to.be.a('function');
+    assume(Base.get).to.be.a('function');
+    assume(Base.set).to.be.a('function');
 
-    expect(Base.prototype.foo).to.equal(undefined);
-    expect(Base.prototype.bar).to.equal(undefined);
+    assume(Base.prototype.foo).to.equal(undefined);
+    assume(Base.prototype.bar).to.equal(undefined);
 
     var x = 'bar';
     Base.get('foo', function () { return 'foo'; });
@@ -76,23 +75,23 @@ describe('fuse', function () {
 
     var base = new Base();
 
-    expect(base.foo).to.equal('foo');
-    expect(base.bar).to.equal('bar');
+    assume(base.foo).to.equal('foo');
+    assume(base.bar).to.equal('bar');
 
     x = 'foo';
-    expect(base.bar).to.equal('foo');
+    assume(base.bar).to.equal('foo');
 
     base.bar = 'baz';
-    expect(base.bar).to.equal('baz');
+    assume(base.bar).to.equal('baz');
   });
 
   it('sets the constructor back to the Base', function () {
     function Base() {} function Case() {}
     fuse(Base, Case);
 
-    expect(Base.prototype.constructor).to.equal(Base);
-    expect(new Base()).to.be.instanceOf(Base);
-    expect(new Base()).to.be.instanceOf(Case);
+    assume(Base.prototype.constructor).to.equal(Base);
+    assume(new Base()).to.be.instanceOf(Base);
+    assume(new Base()).to.be.instanceOf(Case);
   });
 
   it('doesnt add the default methods if we dont want it', function () {
@@ -101,11 +100,11 @@ describe('fuse', function () {
 
     var base = new Base();
 
-    expect(base).to.be.instanceOf(Base);
-    expect(base).to.be.instanceOf(Case);
+    assume(base).to.be.instanceOf(Base);
+    assume(base).to.be.instanceOf(Case);
 
-    expect(base.emits).to.equal(undefined);
-    expect(base.mixin).to.equal(undefined);
+    assume(base.emits).to.equal(undefined);
+    assume(base.mixin).to.equal(undefined);
   });
 
   it('allows disabling of individual methods', function () {
@@ -114,11 +113,11 @@ describe('fuse', function () {
 
     var base = new Base();
 
-    expect(base).to.be.instanceOf(Base);
-    expect(base).to.be.instanceOf(Case);
+    assume(base).to.be.instanceOf(Base);
+    assume(base).to.be.instanceOf(Case);
 
-    expect(base.emits).to.be.a('function');
-    expect(base.mixin).to.equal(undefined);
+    assume(base.emits).to.be.a('function');
+    assume(base.mixin).to.equal(undefined);
   });
 
   it('accepts options as second argument', function () {
@@ -127,8 +126,8 @@ describe('fuse', function () {
 
     var base = new Base();
 
-    expect(base.emits).to.be.a('function');
-    expect(base.mixin).to.equal(undefined);
+    assume(base.emits).to.be.a('function');
+    assume(base.mixin).to.equal(undefined);
   });
 
   describe('.emits', function () {
@@ -136,7 +135,7 @@ describe('fuse', function () {
       function Base() {} function Case() {}
       fuse(Base, Case);
 
-      expect(Base.prototype.emits).to.be.a('function');
+      assume(Base.prototype.emits).to.be.a('function');
     });
 
     it('returns a function that emits the given event', function (done) {
@@ -147,7 +146,7 @@ describe('fuse', function () {
         , emits = base.emits('event');
 
       base.once('event', function (data) {
-        expect(data).to.equal('foo');
+        assume(data).to.equal('foo');
         done();
       });
 
@@ -160,12 +159,12 @@ describe('fuse', function () {
 
       var base = new Base()
         , emits = base.emits('event', function (arg) {
-            expect(arg).to.equal('bar');
+            assume(arg).to.equal('bar');
             return 'foo';
           });
 
       base.once('event', function (data) {
-        expect(data).to.equal('foo');
+        assume(data).to.equal('foo');
         done();
       });
 
@@ -180,26 +179,8 @@ describe('fuse', function () {
         , emits = base.emits('event', 'foo');
 
       base.once('event', function (data, foo) {
-        expect(data).to.equal('foo');
-        expect(foo).to.equal('bar');
-        done();
-      });
-
-      emits('bar');
-    });
-
-    it('can prefix events', function (done) {
-      function Base() {}
-      fuse(Base, EventEmitter, {
-        prefix: 'foo::'
-      });
-
-      var base = new Base()
-        , emits = base.emits('event', 'foo');
-
-      base.once('foo::event', function (data, foo) {
-        expect(data).to.equal('foo');
-        expect(foo).to.equal('bar');
+        assume(data).to.equal('foo');
+        assume(foo).to.equal('bar');
         done();
       });
 
@@ -212,14 +193,14 @@ describe('fuse', function () {
       function Base() {} function Case() {}
       fuse(Base, Case);
 
-      expect(Base.prototype.fuse).to.be.a('function');
+      assume(Base.prototype.fuse).to.be.a('function');
     });
 
     it('initialises the inherited constructor', function (done) {
       function Base() {
         this.fuse();
 
-        expect(this.bar).to.equal('foo');
+        assume(this.bar).to.equal('foo');
         done();
       }
 
@@ -235,20 +216,20 @@ describe('fuse', function () {
       function Base() {
         this.fuse();
 
-        expect(this.writable).to.be.a('function');
-        expect(this.readable).to.be.a('function');
-        expect(this.foo).to.equal(undefined);
+        assume(this.writable).to.be.a('function');
+        assume(this.readable).to.be.a('function');
+        assume(this.foo).to.equal(undefined);
 
         this.readable('foo', 'bar');
         this.writable('bar', 'foo');
 
-        expect(this.foo).to.equal('bar');
-        expect(this.bar).to.equal('foo');
+        assume(this.foo).to.equal('bar');
+        assume(this.bar).to.equal('foo');
 
-        expect(Object.keys(this).length).to.equal(0);
+        assume(Object.keys(this).length).to.equal(0);
 
         this.bar = 'bar';
-        expect(this.bar).to.equal('bar');
+        assume(this.bar).to.equal('bar');
 
         try { this.foo = 'foo'; }
         catch (e) { done(); }
@@ -256,8 +237,8 @@ describe('fuse', function () {
 
       function Case() {}
 
-      expect(Base.prototype.readable).to.equal(undefined);
-      expect(Base.prototype.writable).to.equal(undefined);
+      assume(Base.prototype.readable).to.equal(undefined);
+      assume(Base.prototype.writable).to.equal(undefined);
 
       fuse(Base, Case);
       new Base();
@@ -267,13 +248,13 @@ describe('fuse', function () {
       function Base() {
         this.fuse(arguments);
 
-        expect(this.bar).to.equal('foo');
+        assume(this.bar).to.equal('foo');
         done();
       }
 
       function Case(foo, bar) {
-        expect(foo).to.equal('foo');
-        expect(bar).to.equal('bar');
+        assume(foo).to.equal('foo');
+        assume(bar).to.equal('bar');
 
         this.bar = 'foo';
       }
