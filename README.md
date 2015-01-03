@@ -1,8 +1,12 @@
-# Fusing [![Build Status][status]](https://travis-ci.org/bigpipe/fusing) [![NPM version][npmimgurl]](http://badge.fury.io/js/fusing) [![Coverage Status][coverage]](http://coveralls.io/r/bigpipe/fusing?branch=master)
+# fusing
 
-[status]: https://travis-ci.org/bigpipe/fusing.png
-[npmimgurl]: https://badge.fury.io/js/fusing.png
-[coverage]: http://coveralls.io/repos/bigpipe/fusing/badge.png?branch=master
+[![From bigpipe.io][from]](http://bigpipe.io)[![Version npm][version]](http://browsenpm.org/package/fusing)[![Build Status][build]](https://travis-ci.org/bigpipe/fusing)[![Dependencies][david]](https://david-dm.org/bigpipe/fusing)[![Coverage Status][cover]](https://coveralls.io/r/bigpipe/fusing?branch=master)
+
+[from]: https://img.shields.io/badge/from-bigpipe.io-9d8dff.svg?style=flat-square
+[version]: http://img.shields.io/npm/v/fusing.svg?style=flat-square
+[build]: http://img.shields.io/travis/bigpipe/fusing/master.svg?style=flat-square
+[david]: https://img.shields.io/david/bigpipe/fusing.svg?style=flat-square
+[cover]: http://img.shields.io/coveralls/bigpipe/fusing/master.svg?style=flat-square
 
 Fusing is a small library that creates the base class that is used in all of
 [bigpipe]'s components. It takes care of:
