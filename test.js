@@ -158,9 +158,9 @@ describe('fuse', function () {
       fuse(Base, EventEmitter);
 
       var base = new Base()
-        , emits = base.emits('event', function (arg) {
+        , emits = base.emits('event', function (next, arg) {
             assume(arg).to.equal('bar');
-            return 'foo';
+            next(undefined, 'foo');
           });
 
       base.once('event', function (data) {
